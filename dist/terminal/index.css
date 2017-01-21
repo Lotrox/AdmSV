@@ -1,0 +1,78 @@
+html,
+body {
+    padding: 0px;
+    margin: 0px;
+    background: #323232;
+}
+
+
+/*Terminal*/
+
+div#terminalWrapper {
+    position: relative;
+}
+
+div#terminal {
+    min-width: 250px;
+    min-height: 300px;
+    position: relative;
+    height: 40vh;
+    max-width: 600px;
+    font-family: 'Ubuntu Mono';
+    font-size: 16px;
+    overflow: hidden;
+    background: #2C001E;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    box-shadow: 4px 4px 16px 0px rgba(0, 0, 0, 0.75);
+}
+
+div#fileBar {
+    width: 100%;
+    height: 20px;
+    color: white;
+    position: relative;
+    -webkit-user-select: none;
+    text-align: center;
+    overflow: hidden;
+    background: -ms-linear-gradient(top, #A9A9A9 0%, #333333 100%);
+    background: -o-linear-gradient(top, #A9A9A9 0%, #333333 100%);
+    background: linear-gradient(top, #A9A9A9 0%, #333333 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #595959), color-stop(100%, #404040));
+    background: -moz-linear-gradient(top, #A9A9A9 0%, #333333 100%);
+    filter: progid: DXImageTransform.Microsoft.Gradient(startColorstr='#595959', endColorstr='#404040', GradientType=0);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+div#fileBar span {
+    padding-left: 10px;
+    cursor: default;
+}
+
+input#terminalInput {
+    color: white;
+    font-family: 'Ubuntu Mono';
+    font-size: 16px;
+    border: none;
+    outline: none;
+    background: none;
+    width: 70%;
+}
+
+input#terminalInput::-ms-clear {
+    display: none;
+}
+
+div#terminalOutput {
+    height: 94%;
+    padding-left: 2px;
+    width: 103%;
+    overflow-y: scroll;
+    line-height: 18px;
+    color: white;
+    position: relative;
+}
+
+
+/*End terminal*/
