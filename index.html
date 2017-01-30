@@ -19,7 +19,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/AdminLTE.css">
-
+  <!-- Morris charts -->
+  <link rel="stylesheet" href="../../plugins/morris/morris.css">
   <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'>
   <link href="dist/terminal/index.css" rel='stylesheet' type='text/css'>
   <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
@@ -379,6 +380,23 @@ desired effect
         </div>
         <!-- ./col -->
       </div>
+      <!-- BAR CHART -->
+      <div class="box box-success">
+        <div class="box-header with-border">
+        <h3 class="box-title">CPU USAGE</h3>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+          </div>
+        </div>
+        <div class="box-body chart-responsive">
+          <div class="chart" id="bar-chart" style="height: 300px;"></div>
+        </div>
+        <!-- /.box-body -->
+      </div>
+      <!-- /.box -->
       <!-- /.row -->
       <div id="terminalWrapper">
         <div id="terminal">
@@ -494,6 +512,9 @@ desired effect
 <!-- REQUIRED JS SCRIPTS -->
 <!-- jQuery 2.2.3 -->
 <script src="dist/terminal/index.js"></script>
+<!-- Morris.js charts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="../../plugins/morris/morris.min.js"></script>
 
 <script src="../../plugins/knob/jquery.knob.js"></script>
 <!-- Bootstrap 3.3.6 -->

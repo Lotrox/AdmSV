@@ -764,9 +764,9 @@ if (typeof jQuery === "undefined") {
 
  /*Plots*/
  $(function () {
-    /* jQueryKnob */
+  /* jQueryKnob */
 
-    $(".knob").knob({
+  $(".knob").knob({
       /*change : function (value) {
        //console.log("change : " + value);
        },
@@ -820,7 +820,7 @@ if (typeof jQuery === "undefined") {
             }
           }
         });
-    /* END JQUERY KNOB */
+  /* END JQUERY KNOB */
 
     //INITIALIZE SPARKLINE CHARTS
     $(".sparkline").each(function () {
@@ -829,8 +829,8 @@ if (typeof jQuery === "undefined") {
     });
 
     /* SPARKLINE DOCUMENTATION EXAMPLES http://omnipotent.net/jquery.sparkline/#s-about */
-    drawDocSparklines();
-    drawMouseSpeedDemo();
+    /*drawDocSparklines();
+    drawMouseSpeedDemo();*/
 
   });
 
@@ -874,3 +874,30 @@ if (typeof jQuery === "undefined") {
    console.log('Error')
  }
 });
+ $.ajax({
+  url: 'https://' + ip + ':' + port + '/sar/cpu',
+  type: 'POST',
+  data : JSON.stringify({ key: sessionStorage.getItem("API_KEY") }),
+  success: function (output) {
+    j = JSON.parse(output);
+    var data2 = [];
+    for (i = 0; i < Object.keys(JSON.parse(output)).length; i++){
+      data2.push({y: j[i].time, a: parseFloat(j[i].user.replace(",", ".")), b: parseFloat(j[i].system.replace(",", "."))});
+    }
+    
+    var bar = new Morris.Bar({
+      element: 'bar-chart',
+      resize: true,
+      data: data2,
+      barColors: ['#00a65a', '#f56954'],
+      xkey: 'y',
+      ykeys: ['a', 'b'],
+      labels: ['USER%', 'SYS%', ],
+      hideHover: 'auto'
+    })
+  },
+  error: function () {
+   console.log('Error')
+ }
+});
+ ;
