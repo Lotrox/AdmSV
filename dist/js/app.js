@@ -834,70 +834,141 @@ if (typeof jQuery === "undefined") {
 
   });
 
+ var myApp;
+ myApp = myApp || (function () {
+  var pleaseWaitDiv = $('<div class="modal hide" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false"><div class="modal-header"><h1>Processing...</h1></div><div class="modal-body"><div class="progress progress-striped active"><div class="bar" style="width: 100%;"></div></div></div></div>');
+  return {
+    showPleaseWait: function() {
+      pleaseWaitDiv.modal();
+    },
+    hidePleaseWait: function () {
+      pleaseWaitDiv.modal('hide');
+    },
+
+  };
+})();
+
+myApp.showPleaseWait();
 
 
- /*Obtener datos almacenados*/
- var ip = sessionStorage.getItem("API_IP");
- var port = sessionStorage.getItem("API_PORT");
- /*Mostrar datos almacenados*/    
+/*Obtener datos almacenados*/
+var ip = sessionStorage.getItem("API_IP");
+var port = sessionStorage.getItem("API_PORT");
+/*Mostrar datos almacenados*/    
 
- /* Status */
- $.ajax({
-  url: 'https://' + ip + ':' + port + '/api/status',
-  type: 'POST',
-  data : JSON.stringify({ key: sessionStorage.getItem("API_KEY") }),
-  success: function (output) {
-   $('.hostname').html(output); 
- },
- error: function () {
-   console.log('Error')
-   $(location).attr('href', 'pages/login.html')
- }
+
+$(function() {
+  $(".dial").knob();
 });
 
+$('.dial').trigger(
+  'configure',
+  {
+    "min":10,
+    "max":40,
+    "fgColor":"#330000",
+    "skin":"tron",
+    "cursor":true
+  }
+  );
 
- /* WiFi */
- $.ajax({
-  url: 'https://' + ip + ':' + port + '/wireless/clients',
-  type: 'POST',
-  data : JSON.stringify({ key: sessionStorage.getItem("API_KEY") }),
-  success: function (output) {
-   var obj = jQuery.parseJSON( output );
-   $('.numWifi').html(obj.length); 
-   var ul = $("<ul/>");
-   $(obj).each(function(){
-    $("<li/>").text(this.split(" ")[2]).appendTo(ul);
-  });
-   $('.ul').html(ul);
- },
- error: function () {
-   console.log('Error')
- }
-});
- $.ajax({
-  url: 'https://' + ip + ':' + port + '/sar/cpu',
-  type: 'POST',
-  data : JSON.stringify({ key: sessionStorage.getItem("API_KEY") }),
-  success: function (output) {
-    j = JSON.parse(output);
-    var data2 = [];
-    for (i = 0; i < Object.keys(JSON.parse(output)).length; i++){
-      data2.push({y: j[i].time, a: parseFloat(j[i].user.replace(",", ".")), b: parseFloat(j[i].system.replace(",", "."))});
-    }
-    
-    var bar = new Morris.Bar({
-      element: 'bar-chart',
-      resize: true,
-      data: data2,
-      barColors: ['#00a65a', '#f56954'],
-      xkey: 'y',
-      ykeys: ['a', 'b'],
-      labels: ['USER%', 'SYS%', ],
-      hideHover: 'auto'
-    })
+/* Status */
+function status(){
+  $.ajax({
+    url: 'https://' + ip + ':' + port + '/system/status',
+    type: 'POST',
+    data : JSON.stringify({ key: sessionStorage.getItem("API_KEY") }),
+    success: function (output) {
+      var obj = jQuery.parseJSON( output );
+      $('.hostname').html(obj.host); 
+      $('.so').html(obj.so);
+      $('.kernel').html(obj.kernel);
+      $('.arch').html(obj.arch);
+      $('.ramGb').html(obj.ramGb);
+      $('.mhzCPU').html(obj.mhzCPU);
+      $('.model').html(obj.model);
+      $('.numCPU').html(obj.numCPU);
+      $('.uptime').html(obj.uptime);
+
+      //Update dial for current CPU
+      $('.dial')
+      .val(obj.cuCPU)
+      .trigger('change');
+      $('.usageCPU').html("<b>CPU</b> " + obj.cuCPU + "%");
+    },
+    error: function () {
+     console.log('Error')
+     //$(location).attr('href', 'pages/login.html')
+   }
+ });
+}
+
+/* WiFi */
+function wifi(){
+  $.ajax({
+    url: 'https://' + ip + ':' + port + '/wireless/clients',
+    type: 'POST',
+    data : JSON.stringify({ key: sessionStorage.getItem("API_KEY") }),
+    success: function (output) {
+     var obj = jQuery.parseJSON( output );
+     $('.numWifi').html(obj.length); 
+     var ul = $("<ul/>");
+     $(obj).each(function(){
+      $("<li/>").text(this.split(" ")[2]).appendTo(ul);
+    });
+     $('.ul').html(ul);
+   },
+   error: function(jqXHR, textStatus, errorThrown) {
+    console.log(jqXHR.status)
   },
-  error: function () {
-   console.log('Error')
- }
-});
- ;
+ });
+}
+
+/*SAR CPU*/
+function sarCPU(){
+  $.ajax({
+    url: 'https://' + ip + ':' + port + '/sar/cpu',
+    type: 'POST',
+    data : JSON.stringify({ key: sessionStorage.getItem("API_KEY") }),
+    success: function (output) {
+      var j = JSON.parse(output);
+      var data2 = [];
+      for (i = 0; i < Object.keys(JSON.parse(output)).length; i++){
+        data2.push({y: j[i].time, a: parseFloat(j[i].user), b: parseFloat(j[i].system), c: parseFloat(j[i].iowait), d: parseFloat(j[i].nice), e: parseFloat(j[i].steal)});
+      }
+
+      var bar = new Morris.Bar({
+        element: 'bar-chart',
+        resize: true,
+        data: data2,
+        barColors: ['#428dc7', '#4bb346', '#9c9b9a', '#851fa5', '#c34b2e'],
+        xkey: 'y',
+        ykeys: ['a', 'b', 'c', 'd', 'e'],
+        labels: ['USER%', 'SYS%', 'IO%', 'NICE%', 'STEAL%'],
+        hideHover: 'auto',
+        stacked: true
+      })
+    },
+    error: function () {
+     console.log('Error')
+   }
+ });
+}
+
+/* CURRENT TEMPERATURE */
+function temperature(){
+  $.ajax({
+    url: 'https://' + ip + ':' + port + '/system/temperature',
+    type: 'POST',
+    data : JSON.stringify({ key: sessionStorage.getItem("API_KEY") }),
+    success: function (output) {
+     $('.temp').html(output); 
+     var elem = document.getElementById("temperature");
+     elem.style.height = output +"%";
+     $('.temperature').html("<b>" + output + "°C</b>");
+   },
+   error: function () {
+     console.log('Error')
+   }
+ });
+}

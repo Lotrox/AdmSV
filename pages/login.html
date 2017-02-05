@@ -49,7 +49,7 @@
           <input type="text" class="form-control" placeholder="PORT" id="port">
         </div>
         <div class="input-group">
-          <input type="password" class="form-control" placeholder="API KEY" id="key">
+          <input type="password" class="form-control" placeholder="PASSWORD" id="key">
           <div class="input-group-btn">
             <button type="submit" class="btn" id="send-auth"><i class="fa fa-arrow-right text-muted"></i></button>
           </div>
@@ -62,7 +62,7 @@
     <!-- /.lockscreen-item -->
     <div class="help-block text-center error"></div>
     <div class="help-block text-center">
-      Enter your api key to retrieve your session
+      Enter your configuration to retrieve your session
     </div>
     
 
@@ -89,7 +89,6 @@
           type: 'POST',
           data : JSON.stringify({ key: apikey }),
           success: function (output, status, xhr) {
-            console.log('Todo ha ido bien' + output + status )
             /*Guardando los datos en el LocalStorage*/
             sessionStorage.setItem("API_KEY", output);
             sessionStorage.setItem("API_IP", ip);

@@ -25,8 +25,9 @@ body {
   overflow-y: auto;
 }
 .col-xs-6 {
-    min-width: 30%;
+    min-width: 35%;
 }
+
 /* Layout */
 .wrapper {
   height: 100%;
@@ -95,6 +96,9 @@ body {
     transform: translate(230px, 0);
   }
 }
+
+
+
 .content-wrapper,
 .right-side {
   min-height: 100%;
@@ -1342,6 +1346,10 @@ a:focus {
  * Component: Progress Bar
  * -----------------------
  */
+.progress {
+  border-style: groove;
+}
+
 .progress,
 .progress > .progress-bar {
   -webkit-box-shadow: none;
@@ -3191,8 +3199,8 @@ table.text-center th {
   padding: 0;
   background: #fff;
   position: relative;
-  margin: 10px auto 30px auto;
-  width: 290px;
+  margin: 10px 15px 30px auto;
+  width: 280px;
 }
 /* User image */
 .lockscreen-image {
@@ -4408,6 +4416,9 @@ table.text-center th {
 .modal-danger .modal-header,
 .modal-danger .modal-footer {
   color: #fff !important;
+}
+.modal-backdrop.in{
+  opacity: .9;
 }
 .bg-gray {
   color: #000;
