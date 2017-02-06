@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>CPU | Dashboard</title>
+  <title>SM | Dashboard</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -167,7 +167,7 @@
         <ul class="sidebar-menu">
           <li class="header">NAVIGATOR</li>
           <!-- Optionally, you can add icons to the links -->
-          <li><a href="dashboard.html"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
+          <li class="active"><a href="#"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
           <li class="treeview">
             <a href="#"><i class="fa fa-th"></i> <span>Services</span>
               <span class="pull-right-container">
@@ -179,14 +179,14 @@
               <li><a href="#">Link in level 2</a></li>
             </ul>
           </li>
-          <li class="treeview active">
+          <li class="treeview">
             <a href="#"><i class="fa fa-area-chart"></i> <span>Performance</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
             </a>
             <ul class="treeview-menu">
-              <li class="active"><a href="#">CPU</a></li>
+              <li><a href="cpu.html">CPU</a></li>
               <li><a href="mem.html">Memory</a></li>
             </ul>
           </li>
@@ -204,12 +204,12 @@
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>
-          CPU
+          Dashboard
           <!--<small>Optional description</small>-->
         </h1>
         <ol class="breadcrumb">
-          <li><a href="#"><i class="fa fa-area-chart"></i> Performance</a></li>
-          <li class="active">CPU</li>
+          <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+          <li class="active">Main</li>
         </ol>
       </section>
 
@@ -232,29 +232,76 @@
             <div class="icon">
               <i class="fa fa-pie-chart" aria-hidden="true"></i>
             </div>
-            <div class="small-box-footer">
-             Current CPU level
-           </div>
+            <a href="cpu.html" class="small-box-footer">
+             More info <i class="fa fa-arrow-circle-right"></i>
+           </a>
          </div>
        </div>
+       <!-- RAM -->
+       <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-green">
+          <div class="inner">
+            <!-- CPU -->
+            <input type="text" class="dial2" data-readonly="true" readonly="readonly" value="2" data-skin="tron" data-thickness="0.2" data-angleArc="250" data-angleOffset="-125" data-width="120" data-height="120" data-displayInput=false data-fgColor="#7c7c7c">
+            <p class="usageMEM">MEM usage %</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-stats-bars" aria-hidden="true"></i>
+          </div>
+          <a href="mem.html" class="small-box-footer">
+           More info <i class="fa fa-arrow-circle-right"></i>
+         </a>
+       </div>
+     </div>
 
-  </div>
-  <!-- BAR CHART -->
-  <div class="box box-success">
-    <div class="box-header with-border">
-      <h3 class="box-title">Daily CPU USAGE %</h3>
 
-      <div class="box-tools pull-right">
-        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-        </button>
-        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+
+     <!-- WIFI -->
+     <div class="col-lg-3 col-xs-6">
+      <!-- small box -->
+      <div class="small-box bg-aqua">
+        <div class="inner">
+          <h3 class="numWifi"></h3>
+          <p>DHCP Clients</p>
+        </div>
+        <div class="icon">
+          <i class="fa fa-sitemap"></i>
+        </div>
+        <div class="dropup">
+          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> Clients list
+            <span class="caret"></span></button>
+            <ul class="dropdown-menu dropdown-menu2 ul">
+              <li><a href="#">HTML</a></li>
+              <li><a href="#">CSS</a></li>
+              <li><a href="#">JavaScript</a></li>
+            </ul>
+          </div> 
+        </a>       
       </div>
+
     </div>
-    <div class="box-body chart-responsive">
-      <div class="chart" id="bar-chart" style="height: 300px;"></div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-xs-6">
+      <!-- small box -->
+      <div class="small-box bg-yellow">
+        <div class="inner">
+          <h3><text class="rx"></text>/<text class="tx"></text></h3>
+
+          <p>Rx/Tx Kbps</p>
+        </div>
+        <div class="icon">
+          <i class="fa fa-exchange"></i>
+        </div>
+        <a href="#" class="small-box-footer">
+          Networking traffic
+        </a>
+      </div>
+
     </div>
-    <!-- /.box-body -->
-  </div>
+
+    
+
     <!-- =========================================================== -->
 
   </section>
@@ -293,33 +340,37 @@
 <script>
 
   status();
-  sarCPU();
+  wifi();
   temperature();
   log();
+  netAVG();
 
   var statusInterval = setInterval(status, 1000);
-  var sarCPUInterval = setInterval(sarCPU, 300000);
+  var wifiInterval = setInterval(wifi, 30000);
   var tempInterval = setInterval(temperature, 10000);
   var logInterval = setInterval(log, 30000);
-
+  var netAVGInterval = setInterval(netAVG, 1000);
 
   function changeInterval(c){
     clearInterval(statusInterval);
     statusInterval = setInterval(status, c * 1000);
 
-    clearInterval(sarCPUInterval);
-    sarCPUInterval = setInterval(sarCPU, c * 300000);
+    clearInterval(wifiInterval);
+    wifiInterval = setInterval(wifi, c * 30000);
 
     clearInterval(tempInterval);
     tempInterval = setInterval(temperature, c * 10000);
 
     clearInterval(logInterval);
     logInterval = setInterval(log, c * 30000);
+
+    clearInterval(netAVGInterval);
+    netAVGInterval = setInterval(netAVG, c * 1000);
   }
 
   setTimeout(function() {
   myApp.hidePleaseWait();// rest of code here
-}, 500);
+}, 800);
 </script>
 
 

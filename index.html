@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-
-<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>SM | Dashboard</title>
+  <title>AdminLTE 2 | Lockscreen</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -16,416 +14,105 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/AdminLTE.css">
-  <!-- Morris charts -->
-  <link rel="stylesheet" href="../../plugins/morris/morris.css">
-  <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'>
-  <link href="dist/terminal/index.css" rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
-  <link rel="shortcut icon" href="dist/img/ubuntu-server-logo.png" />
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
 </head>
-
-
-<body class="hold-transition skin-red sidebar-mini">
-  <div class="wrapper">
-
-    <!-- Main Header -->
-    <header class="main-header">
-
-      <!-- Logo -->
-      <a href="index2.html" class="logo">
-        <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><b>S</b>M</span>
-        <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>Server</b>Management</span>
-      </a>
-
-      <!-- Header Navbar -->
-      <nav class="navbar navbar-static-top" role="navigation">
-        <!-- Sidebar toggle button-->
-        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-          <span class="sr-only">Toggle navigation</span>
-        </a>
-        <!-- Navbar Right Menu -->
-        <div class="navbar-custom-menu">
-          <ul class="nav navbar-nav">
-            <!-- Messages: style can be found in dropdown.less-->
-            <li class="dropdown messages-menu">
-              <!-- Menu toggle button -->
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <i class="fa fa-envelope-o"></i>
-                <span class="label label-success">4</span>
-              </a>
-              <ul class="dropdown-menu">
-                <li class="header">You have 4 messages</li>
-                <li>
-                  <!-- inner menu: contains the messages -->
-                  <ul class="menu">
-                    <li><!-- start message -->
-                      <a href="#">
-                        <div class="pull-left">
-                          <!-- User Image -->
-                          <img src="dist/img/ubuntu-server-logo.png" class="img-circle" alt="User Image">
-                        </div>
-                        <!-- Message title and timestamp -->
-                        <h4>
-                          Support Team
-                          <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                        </h4>
-                        <!-- The message -->
-                        <p>Why not buy a new awesome theme?</p>
-                      </a>
-                    </li>
-                    <!-- end message -->
-                  </ul>
-                  <!-- /.menu -->
-                </li>
-                <li class="footer"><a href="#">See All Messages</a></li>
-              </ul>
-            </li>
-            <!-- /.messages-menu -->
-
-            <!-- Notifications Menu -->
-            <li class="dropdown notifications-menu">
-              <!-- Menu toggle button -->
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <i class="fa fa-bell-o"></i>
-                <span class="label label-warning">10</span>
-              </a>
-              <ul class="dropdown-menu">
-                <div class="header">Temperature</div>
-                <!-- Temperature -->
-                <center>
-                  <div class="progress vertical progress-xs">
-                    <div id="temperature" class="progress-bar progress-bar-striped progress-bar-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="height: 20%"> 
-                    </div>
-                  </div>
-                  <div class="knob-label temperature"></div>
-                </center>
-              </ul>
-            </li>
-            <!-- Tasks Menu -->
-            <li class="dropdown tasks-menu">
-              <!-- Menu Toggle Button -->
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <i class="fa fa-fire"></i>
-                <span class="label label-danger">1</span>
-              </a>
-              <ul class="dropdown-menu">
-                <li class="header">Current Temperature</li>
-                <li>
-                  <!-- Inner menu: contains the tasks -->
-                  <ul class="menu">
-                    <li><!-- Task item -->
-                      <!-- Task title and progress text -->
-                      <center><h4 class="temperature">
-                        <small class="pull-right">20%</small>
-                      </h4></center>
-                      <!-- The progress bar -->
-                      <div class="progress xs">
-                        <!-- Change the css width attribute to simulate progress -->
-                        <div id="temp" class="progress-bar progress-bar-striped progress-bar-danger" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                          <span class="sr-only">20% Complete</span>
-                        </div>
-                      </div>
-                    </li>
-                    <!-- end task item -->
-                  </ul>
-                </li>
-              </ul>
-            </li>
-            <!-- User Account Menu -->
-            <li class="dropdown user user-menu">
-              <!-- Menu Toggle Button -->
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <!-- The user image in the navbar-->
-                <img src="dist/img/ubuntu-server-logo.png" class="user-image" alt="User Image">
-                <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                <span class="hidden-xs hostname">Hostname</span>
-              </a>
-              <ul class="dropdown-menu">
-                <!-- The user image in the menu -->
-                <li class="user-header">
-                  <img src="dist/img/ubuntu-server-logo.png" class="img-circle" alt="User Image">
-
-                  <p>
-                    <b>System Info</b>
-                    <small>Uptime <text class="uptime"></text></small>
-                  </p>
-                </li>
-                <!-- Menu Body -->
-                <li class="user-body">
-                  <div class="row">
-                    <center><p>
-                      <small>
-                        <li><b>Hostname: </b><text class="hostname"></text></li>
-                        <li><b>Operating System: </b><text class="so"></text></li>
-                        <li><b>Kernel: </b><text class="kernel"></text></li>
-                        <li><b>Architecture: </b><text class="arch"></text></li>
-                        <li><b>Model: </b><text class="model"></text></li>
-                        <li><b>CPU(s): </b><text class="numCPU"></text></li>
-                        <li><b>RAM: </b><text class="ramGb"></text>GB</li>
-                      </small>
-                    </p></center>
-                  </div>
-                  <!-- /.row -->
-                </li>
-              </ul>
-            </li>
-            <!-- Control Sidebar Toggle Button -->
-            <li>
-              <a href="pages/login.html"><i class="fa fa-sign-out"></i></a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-    </header>
-    <!-- Left side column. contains the logo and sidebar -->
-    <aside class="main-sidebar">
-
-      <!-- sidebar: style can be found in sidebar.less -->
-      <section class="sidebar">
-
-        <!-- Sidebar user panel (optional) -->
-        <div class="user-panel">
-          <div class="pull-left image">
-            <img src="dist/img/ubuntu-server-logo.png" class="img-circle" alt="User Image">
-          </div>
-          <div class="pull-left info hostname">
-            <!-- Status -->
-            <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-          </div>
-        </div>
-
-
-        <!-- Sidebar Menu -->
-        <ul class="sidebar-menu">
-          <li class="header">NAVIGATOR</li>
-          <!-- Optionally, you can add icons to the links -->
-          <li class="active"><a href="#"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
-          <li class="treeview">
-            <a href="#"><i class="fa fa-th"></i> <span>Services</span>
-              <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-            </a>
-            <ul class="treeview-menu">
-              <li><a href="#">Link in level 2</a></li>
-              <li><a href="#">Link in level 2</a></li>
-            </ul>
-          </li>
-          <li class="treeview">
-            <a href="#"><i class="fa fa-area-chart"></i> <span>SAR charts</span>
-              <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-            </a>
-            <ul class="treeview-menu">
-              <li><a href="#">Link in level 2</a></li>
-              <li><a href="#">Link in level 2</a></li>
-            </ul>
-          </li>
-          <li><a href="#"><i class="fa fa-shield"></i> <span>Firewall</span></a></li>
-          <li><a href="#"><i class="fa fa-terminal"></i> <span>Telnet</span></a></li>
-          
-        </ul>
-        <!-- /.sidebar-menu -->
-      </section>
-      <!-- /.sidebar -->
-    </aside>
-
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-      <!-- Content Header (Page header) -->
-      <section class="content-header">
-        <h1>
-          Dashboard
-          <!--<small>Optional description</small>-->
-        </h1>
-        <ol class="breadcrumb">
-          <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-          <li class="active">Main</li>
-        </ol>
-      </section>
-
-      <!-- Main content -->
-      <section class="content">
-
-       <!-- =========================================================== -->
-
-       <!-- CPU -->
-       <div class="row">
-         <!-- CPU -->
-         <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-red">
-            <div class="inner">
-              <!-- CPU -->
-              <input type="text" class="dial" data-readonly="true" readonly="readonly" value="2" data-skin="tron" data-thickness="0.2" data-angleArc="250" data-angleOffset="-125" data-width="120" data-height="120" data-displayInput=false data-fgColor="#7c7c7c">
-              <p class="usageCPU">CPU usage %</p>
-            </div>
-            <div class="icon">
-              <i class="fa fa-pie-chart" aria-hidden="true"></i>
-            </div>
-            <a href="#" class="small-box-footer">
-             More info <i class="fa fa-arrow-circle-right"></i>
-           </a>
-         </div>
-       </div>
-       <!-- RAM -->
-       <div class="col-lg-3 col-xs-6">
-        <!-- small box -->
-        <div class="small-box bg-red">
-          <div class="inner">
-            <!-- CPU -->
-            <input type="text" class="dial" data-readonly="true" readonly="readonly" value="2" data-skin="tron" data-thickness="0.2" data-angleArc="250" data-angleOffset="-125" data-width="120" data-height="120" data-displayInput=false data-fgColor="#7c7c7c">
-            <p class="usageCPU">CPU usage %</p>
-          </div>
-          <div class="icon">
-            <i class="fa fa-pie-chart" aria-hidden="true"></i>
-          </div>
-          <a href="#" class="small-box-footer">
-           More info <i class="fa fa-arrow-circle-right"></i>
-         </a>
-       </div>
-     </div>
-
-
-
-     <!-- WIFI -->
-     <div class="col-lg-3 col-xs-6">
-      <!-- small box -->
-      <div class="small-box bg-aqua">
-        <div class="inner">
-          <h3 class="numWifi"></h3>
-          <p>DHCP Clients</p>
-        </div>
-        <div class="icon">
-          <i class="fa fa-sitemap"></i>
-        </div>
-        <a href="#" class="small-box-footer">
-          More info <i class="fa fa-arrow-circle-right"></i>
-        </a>
-      </div>
+<body class="hold-transition lockscreen">
+  <!-- Automatic element centering -->
+  <div class="lockscreen-wrapper">
+    <div class="lockscreen-logo">
+      <b>Server</b>Management</a>
     </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-xs-6">
-      <!-- small box -->
-      <div class="small-box bg-green">
-        <div class="inner">
-          <h3>53<sup style="font-size: 20px">%</sup></h3>
+    <!-- User name -->
+    <div class="lockscreen-name">MiniPC</div>
 
-          <p>SEC %</p>
-        </div>
-        <div class="icon">
-          <i class="ion ion-stats-bars"></i>
-        </div>
-        <a href="#" class="small-box-footer">
-          More info <i class="fa fa-arrow-circle-right"></i>
-        </a>
+    <!-- START LOCK SCREEN ITEM -->
+    <div class="lockscreen-item">
+      <!-- lockscreen image -->
+      <div class="lockscreen-image">
+        <img src="dist/img/ubuntu-server-logo.png" alt="User Image">
       </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-xs-6">
-      <!-- small box -->
-      <div class="small-box bg-yellow">
-        <div class="inner">
-          <h3>44</h3>
+      <!-- /.lockscreen-image -->
 
-          <p>SEC 2 %</p>
+      <!-- lockscreen credentials (contains the form) -->
+      <form class="lockscreen-credentials">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="IP ADDRESS" id="ip">
+
         </div>
-        <div class="icon">
-          <i class="ion ion-person-add"></i>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="PORT" id="port">
         </div>
-        <a href="#" class="small-box-footer">
-          More info <i class="fa fa-arrow-circle-right"></i>
-        </a>
-      </div>
+        <div class="input-group">
+          <input type="password" class="form-control" placeholder="PASSWORD" id="key">
+          <div class="input-group-btn">
+            <button type="submit" class="btn" id="send-auth"><i class="fa fa-arrow-right text-muted"></i></button>
+          </div>
+        </div>
+
+      </form>
+      <!-- /.lockscreen credentials -->
+
     </div>
+    <!-- /.lockscreen-item -->
+    <div class="help-block text-center error"></div>
+    <div class="help-block text-center">
+      Enter your configuration to retrieve your session
+    </div>
+    
+
 
   </div>
-  <!-- BAR CHART -->
-  <div class="box box-success">
-    <div class="box-header with-border">
-      <h3 class="box-title">CPU USAGE</h3>
+  <!-- /.center -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script>
+    /*Limpieza de almacenamiento*/
+    localStorage.clear();
+    sessionStorage.clear();
 
-      <div class="box-tools pull-right">
-        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-        </button>
-        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-      </div>
-    </div>
-    <div class="box-body chart-responsive">
-      <div class="chart" id="bar-chart" style="height: 300px;"></div>
-    </div>
-    <!-- /.box-body -->
-  </div>
+    $(document).ready(function(){  
+      $('#send-auth').click(function(event){  
+       event.preventDefault();
+       /*Captura de datos escrito en los inputs*/      
+       var ip     = document.getElementById("ip").value;
+       var port   = document.getElementById("port").value;
+       var apikey = document.getElementById("key").value;
+       /*Funcion Cargar y Mostrar datos*/
+       $(document).ready(function(){                      
+        $.ajax({
+          url: 'https://' + ip + ':' + port + '/api/login',
+          type: 'POST',
+          data : JSON.stringify({ key: apikey }),
+          success: function (output, status, xhr) {
+            /*Guardando los datos en el LocalStorage*/
+            localStorage.setItem("API_KEY", output);
+            localStorage.setItem("API_IP", ip);
+            localStorage.setItem("API_PORT", port);
+            $(location).attr('href', 'pages/dashboard.html')
+          },
+          error: function (jqXHR, exception) {
+           //console.log('Error' + jqXHR + " " + exception)
+           //alert('Error' + jqXHR + " " + exception)
+           $('.error').html('<a href=https://' + ip + ':' + port + '/api> Check if your server is running here</a>');
+         }
+       });
+      });  
 
-  <!-- TERMINAL -->
-  <div id="terminalWrapper">
-    <div id="terminal">
-      <div id="fileBar"><span>root@sm</span>
-      </div>
-      <div id="terminalOutput">
-        <span id="welcomeMessage">
-          /****** SSH SERVER MANAGEMENT CLIENT ******/
-          <br>* By Daniel Martínez Caballero
-          <br>* Welcome <text class="hostname"></text>!
-          <br>* This is not a full terminal version
-          <br>/******************************************/
-          <br></span>
-        </div>
-      </div>
-    </div>
-    <!-- =========================================================== -->
+       
+       /*Limpiando los campos o inputs*/
+      //document.getElementById("apikey").value = "";
+    });  
+    });
 
-  </section>
-  <!-- /.content -->
-</div>
-<!-- /.content-wrapper -->
-
-<!-- Main Footer -->
-<footer class="main-footer">
-  <!-- To the right -->
-  <div class="pull-right hidden-xs">
-    <a href="http://www10.ujaen.es/">Universidad de Jaén</a> - Daniel Martínez Caballero
-  </div>
-  <!-- Default to the left -->
-  <strong>Copyright &copy; 2017 <a href="#">Server Management</a>.</strong> All rights reserved.
-</footer>
-
-
-<div class="control-sidebar-bg"></div>
-</div>
-<!-- ./wrapper -->
-
-<!-- REQUIRED JS SCRIPTS -->
-<!-- jQuery 2.2.3 -->
-<script src="dist/terminal/index.js"></script>
-<!-- Morris.js charts -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-<script src="../../plugins/morris/morris.min.js"></script>
-
-<script src="../../plugins/knob/jquery.knob.js"></script>
-<!-- Bootstrap 3.3.6 -->
-<script src="bootstrap/js/bootstrap.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/app.js"></script>
-
-<script>
-  status()
-  setInterval("status()",1000);
-
-  wifi()
-  setInterval("wifi()",20000);
-
-  temperature()
-  setInterval("temperature()",10000);
-
-  setTimeout(function() {
-  myApp.hidePleaseWait();// rest of code here
-}, 500);
-</script>
-
-
+  </script>
+  <!-- jQuery 2.2.3 -->
+  <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
+  <!-- Bootstrap 3.3.6 -->
+  <script src="bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>

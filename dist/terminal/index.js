@@ -114,6 +114,7 @@ $(document).ready(function () {
         },
         error: function () {
             console.log('Error')
+            printToOutput('Invalid command \"' + input + '\"');
             //$(location).attr('href', 'pages/login.html')
         }
     });
@@ -128,8 +129,6 @@ $(document).ready(function () {
         case '':
         updateInput();
         break;
-            default:
-            printToOutput('Invalid command \"' + command + '\"');
         }
     }
 

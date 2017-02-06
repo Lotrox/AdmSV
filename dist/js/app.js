@@ -852,13 +852,14 @@ myApp.showPleaseWait();
 
 
 /*Obtener datos almacenados*/
-var ip = sessionStorage.getItem("API_IP");
-var port = sessionStorage.getItem("API_PORT");
+var ip = localStorage.getItem("API_IP");
+var port = localStorage.getItem("API_PORT");
 /*Mostrar datos almacenados*/    
 
 
 $(function() {
   $(".dial").knob();
+  $(".dial2").knob();
 });
 
 $('.dial').trigger(
@@ -871,13 +872,24 @@ $('.dial').trigger(
     "cursor":true
   }
   );
+$('.dial2').trigger(
+  'configure',
+  {
+    "min":10,
+    "max":40,
+    "fgColor":"#330000",
+    "skin":"tron",
+    "cursor":true
+  }
+  );
 
 /* Status */
 function status(){
+  console.log("status");
   $.ajax({
     url: 'https://' + ip + ':' + port + '/system/status',
     type: 'POST',
-    data : JSON.stringify({ key: sessionStorage.getItem("API_KEY") }),
+    data : JSON.stringify({ key: localStorage.getItem("API_KEY") }),
     success: function (output) {
       var obj = jQuery.parseJSON( output );
       $('.hostname').html(obj.host); 
@@ -895,10 +907,15 @@ function status(){
       .val(obj.cuCPU)
       .trigger('change');
       $('.usageCPU').html("<b>CPU</b> " + obj.cuCPU + "%");
+
+      //Update dial for current MEM
+      $('.dial2')
+      .val(obj.cuMEM)
+      .trigger('change');
+      $('.usageMEM').html("<b>MEM</b> " + obj.cuMEM + "%");
     },
     error: function () {
      console.log('Error')
-     //$(location).attr('href', 'pages/login.html')
    }
  });
 }
@@ -908,28 +925,30 @@ function wifi(){
   $.ajax({
     url: 'https://' + ip + ':' + port + '/wireless/clients',
     type: 'POST',
-    data : JSON.stringify({ key: sessionStorage.getItem("API_KEY") }),
+    data : JSON.stringify({ key: localStorage.getItem("API_KEY") }),
     success: function (output) {
      var obj = jQuery.parseJSON( output );
      $('.numWifi').html(obj.length); 
      var ul = $("<ul/>");
      $(obj).each(function(){
-      $("<li/>").text(this.split(" ")[2]).appendTo(ul);
+      $("<li/>").text(this.split(" ")[2] + "\n" + this.split(" ")[0]).appendTo(ul);
+
     });
      $('.ul').html(ul);
    },
    error: function(jqXHR, textStatus, errorThrown) {
     console.log(jqXHR.status)
   },
- });
+});
 }
+
 
 /*SAR CPU*/
 function sarCPU(){
   $.ajax({
     url: 'https://' + ip + ':' + port + '/sar/cpu',
     type: 'POST',
-    data : JSON.stringify({ key: sessionStorage.getItem("API_KEY") }),
+    data : JSON.stringify({ key: localStorage.getItem("API_KEY") }),
     success: function (output) {
       var j = JSON.parse(output);
       var data2 = [];
@@ -941,7 +960,7 @@ function sarCPU(){
         element: 'bar-chart',
         resize: true,
         data: data2,
-        barColors: ['#428dc7', '#4bb346', '#9c9b9a', '#851fa5', '#c34b2e'],
+        barColors: ['#c34b2e', '#9c9b9a', '#851fa5', '#428dc7', '#4bb346'],
         xkey: 'y',
         ykeys: ['a', 'b', 'c', 'd', 'e'],
         labels: ['USER%', 'SYS%', 'IO%', 'NICE%', 'STEAL%'],
@@ -955,20 +974,176 @@ function sarCPU(){
  });
 }
 
+/*SAR MEM*/
+function sarMEM(){
+  $.ajax({
+    url: 'https://' + ip + ':' + port + '/sar/mem',
+    type: 'POST',
+    data : JSON.stringify({ key: localStorage.getItem("API_KEY") }),
+    success: function (output) {
+      var j = JSON.parse(output);
+      var data2 = [];
+      for (i = 0; i < Object.keys(JSON.parse(output)).length; i++){
+        var used = Math.round(parseFloat(j[i].used)/(parseFloat(j[i].free)+parseFloat(j[i].used))*10000)/100
+        var used = Math.round(parseFloat(j[i].used)/1024/1024*100)/100
+        data2.push({y: j[i].time, a: used});
+      }
+      console.log(data2);
+      var bar = new Morris.Area({
+        element: 'bar-chart',
+        resize: true,
+        data: data2,
+        lineColors: ['#00a65a'],
+        xkey: 'y',
+        ykeys: ['a'],
+        labels: ['USED(GB)'],
+        hideHover: 'auto',
+        parseTime: false,
+        pointSize: 0
+      })
+    },
+    error: function () {
+     console.log('Error')
+   }
+ });
+}
+
 /* CURRENT TEMPERATURE */
 function temperature(){
   $.ajax({
     url: 'https://' + ip + ':' + port + '/system/temperature',
     type: 'POST',
-    data : JSON.stringify({ key: sessionStorage.getItem("API_KEY") }),
+    data : JSON.stringify({ key: localStorage.getItem("API_KEY") }),
     success: function (output) {
-     $('.temp').html(output); 
-     var elem = document.getElementById("temperature");
-     elem.style.height = output +"%";
-     $('.temperature').html("<b>" + output + "°C</b>");
+     $('.temp').html("<b>" + output + "°C</b>"); 
+     $('.temp2').html( output ); 
+     var elem = document.getElementById("temp2");
+     elem.style.width =  output + "%";
    },
    error: function () {
      console.log('Error')
    }
  });
 }
+
+/* NETWORK AVG */
+function netAVG(){
+  $.ajax({
+    url: 'https://' + ip + ':' + port + '/sar/net/avg',
+    type: 'POST',
+    data : JSON.stringify({ key: localStorage.getItem("API_KEY") }),
+    success: function (output) {
+     var j = JSON.parse(output);
+     $('.tx').html(j.tx); 
+     $('.rx').html(j.rx);
+   },
+   error: function () {
+     console.log('Error')
+   }
+ });
+}
+
+
+/* LOG */
+function log(){
+  $.ajax({
+    url: 'https://' + ip + ':' + port + '/api/log',
+    type: 'POST',
+    data : JSON.stringify({ key: localStorage.getItem("API_KEY") }),
+    success: function (output) {
+     var obj = jQuery.parseJSON( output ); 
+     var st = "";
+     for (i = Object.keys(JSON.parse(output)).length - 1; i > -1 ; i--){
+      if (obj[i].check == "OK"){
+        st = st + '<li><a href="#"><h4>' + obj[i].ip + ' <small><i class="fa fa-clock-o"></i> ' + obj[i].time + ' </small> <i class="fa fa-check-circle"></i>   </h4></a></li>'
+
+      }else{
+        st = st + '<li><a href="#"><h4>' + obj[i].ip + ' <small><i class="fa fa-clock-o"></i> ' + obj[i].time + ' </small> <i class="fa fa-times-circle"></i>   </h4></a></li>'
+      }
+    };
+    $('.logList').html(st);
+    $('.numLog').html(Object.keys(JSON.parse(output)).length);
+  },
+  error: function () {
+   console.log('Error')
+   $(location).attr('href', '/index.html')
+ }
+});
+}
+
+
+
+/* Services list */
+function services(){
+  $.ajax({
+    url: 'https://' + ip + ':' + port + '/services/list',
+    type: 'POST',
+    data : JSON.stringify({ key: localStorage.getItem("API_KEY") }),
+    success: function (output) {
+      var obj = jQuery.parseJSON( output );
+      data2 = []
+      for (i = 0; i < Object.keys(JSON.parse(output)).length; i++){
+        color = 'list-group-item-success'; 
+        icon  = '<i style="float: right" class="fa fa-stop"></i>'
+        start  = ""
+        if (obj[i].status === 'exited'){ color = 'list-group-item-warning'; icon  = '<i style="float: right" class="fa fa-play"></i>'; start = "*" };
+        if (obj[i].status === 'dead')  { color = 'list-group-item-danger'; icon  = '<i style="float: right" class="fa fa-play"></i>'; start = "*"};
+        data2.push('<div class="list-group-item list-group-item-action ' + color + '" id="' + start + obj[i].name +' ">' + obj[i].name + icon + '</div>');
+      }
+      $('.services').html(data2);
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      console.log(jqXHR.status)
+    },
+  });
+}
+
+var ul = document.getElementById('listServices');
+
+ul.addEventListener('click', function(e) {
+  if (e.target.tagName === 'DIV'){
+    if(e.target.id[0] === '*'){
+      $.ajax({
+        url: 'https://' + ip + ':' + port + '/services/' + e.target.id.split('*')[1].split('.service')[0] + '/start',
+        type: 'POST',
+        data : JSON.stringify({ key: localStorage.getItem("API_KEY") }),
+        success: function (output) {
+          location.reload();
+        },
+        error: function () {
+         console.log('Error')
+       }
+     });
+    }else{
+      $.ajax({
+        url: 'https://' + ip + ':' + port + '/services/' + e.target.id.split('.service')[0] + '/stop',
+        type: 'POST',
+        data : JSON.stringify({ key: localStorage.getItem("API_KEY") }),
+        success: function (output) {
+          location.reload();
+        },
+        error: function () {
+         console.log('Error')
+       }
+     });
+    }
+  }
+});
+
+
+/* ---------------- */
+
+
+
+var window_focus = true;
+
+$(window).focus(function() {
+  console.log("true");
+  window_focus = true;
+  changeInterval(1);
+})
+.blur(function() {
+  console.log("false");
+  window_focus = false;
+  changeInterval(10);
+});

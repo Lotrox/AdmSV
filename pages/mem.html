@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>CPU | Dashboard</title>
+  <title>RAM | Dashboard</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -186,8 +186,8 @@
               </span>
             </a>
             <ul class="treeview-menu">
-              <li class="active"><a href="#">CPU</a></li>
-              <li><a href="mem.html">Memory</a></li>
+              <li><a href="cpu.html">CPU</a></li>
+              <li class="active"><a href="mem.html">Memory</a></li>
             </ul>
           </li>
           <li><a href="#"><i class="fa fa-shield"></i> <span>Firewall</span></a></li>
@@ -204,12 +204,12 @@
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>
-          CPU
+          Memory RAM
           <!--<small>Optional description</small>-->
         </h1>
         <ol class="breadcrumb">
           <li><a href="#"><i class="fa fa-area-chart"></i> Performance</a></li>
-          <li class="active">CPU</li>
+          <li class="active">Memory</li>
         </ol>
       </section>
 
@@ -218,22 +218,22 @@
 
        <!-- =========================================================== -->
 
-       <!-- CPU -->
+       <!-- RAM -->
        <div class="row">
-         <!-- CPU -->
+         <!-- RAM -->
          <div class="col-lg-3 col-xs-6">
           <!-- small box -->
-          <div class="small-box bg-red">
+          <div class="small-box bg-green">
             <div class="inner">
               <!-- CPU -->
-              <input type="text" class="dial" data-readonly="true" readonly="readonly" value="2" data-skin="tron" data-thickness="0.2" data-angleArc="250" data-angleOffset="-125" data-width="120" data-height="120" data-displayInput=false data-fgColor="#7c7c7c">
-              <p class="usageCPU">CPU usage %</p>
+              <input type="text" class="dial2" data-readonly="true" readonly="readonly" value="2" data-skin="tron" data-thickness="0.2" data-angleArc="250" data-angleOffset="-125" data-width="120" data-height="120" data-displayInput=false data-fgColor="#7c7c7c">
+              <p class="usageMEM">RAM usage %</p>
             </div>
             <div class="icon">
               <i class="fa fa-pie-chart" aria-hidden="true"></i>
             </div>
             <div class="small-box-footer">
-             Current CPU level
+             Current RAM level
            </div>
          </div>
        </div>
@@ -242,7 +242,7 @@
   <!-- BAR CHART -->
   <div class="box box-success">
     <div class="box-header with-border">
-      <h3 class="box-title">Daily CPU USAGE %</h3>
+      <h3 class="box-title">Daily Memory usage</h3>
 
       <div class="box-tools pull-right">
         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -255,10 +255,10 @@
     </div>
     <!-- /.box-body -->
   </div>
-    <!-- =========================================================== -->
+  <!-- =========================================================== -->
 
-  </section>
-  <!-- /.content -->
+</section>
+<!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
 
@@ -293,12 +293,12 @@
 <script>
 
   status();
-  sarCPU();
+  sarMEM();
   temperature();
   log();
 
   var statusInterval = setInterval(status, 1000);
-  var sarCPUInterval = setInterval(sarCPU, 300000);
+  var sarMEMInterval = setInterval(sarMEM, 300000);
   var tempInterval = setInterval(temperature, 10000);
   var logInterval = setInterval(log, 30000);
 
@@ -307,8 +307,8 @@
     clearInterval(statusInterval);
     statusInterval = setInterval(status, c * 1000);
 
-    clearInterval(sarCPUInterval);
-    sarCPUInterval = setInterval(sarCPU, c * 300000);
+    clearInterval(sarMEMInterval);
+    sarMEMInterval = setInterval(sarMEM, c * 300000);
 
     clearInterval(tempInterval);
     tempInterval = setInterval(temperature, c * 10000);

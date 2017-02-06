@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>CPU | Dashboard</title>
+  <title>Services | Dashboard</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -32,7 +32,7 @@
     <header class="main-header">
 
       <!-- Logo -->
-      <a href="dashboard.html" class="logo">
+      <a href="index2.html" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><b>S</b>M</span>
         <!-- logo for regular state and mobile devices -->
@@ -168,30 +168,29 @@
           <li class="header">NAVIGATOR</li>
           <!-- Optionally, you can add icons to the links -->
           <li><a href="dashboard.html"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
-          <li class="treeview">
+          <li class="active treeview">
             <a href="#"><i class="fa fa-th"></i> <span>Services</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
             </a>
             <ul class="treeview-menu">
-              <li><a href="#">Link in level 2</a></li>
-              <li><a href="#">Link in level 2</a></li>
+              <li class="active"><a href="#">List</a></li>
             </ul>
           </li>
-          <li class="treeview active">
+          <li class="treeview">
             <a href="#"><i class="fa fa-area-chart"></i> <span>Performance</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
             </a>
             <ul class="treeview-menu">
-              <li class="active"><a href="#">CPU</a></li>
+              <li><a href="cpu.html">CPU</a></li>
               <li><a href="mem.html">Memory</a></li>
             </ul>
           </li>
           <li><a href="#"><i class="fa fa-shield"></i> <span>Firewall</span></a></li>
-          <li><a href="telnet.html"><i class="fa fa-terminal"></i> <span>Telnet</span></a></li>
+          <li><a href="#"><i class="fa fa-terminal"></i> <span>Telnet</span></a></li>
           
         </ul>
         <!-- /.sidebar-menu -->
@@ -204,123 +203,122 @@
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>
-          CPU
+          Services list
           <!--<small>Optional description</small>-->
         </h1>
         <ol class="breadcrumb">
-          <li><a href="#"><i class="fa fa-area-chart"></i> Performance</a></li>
-          <li class="active">CPU</li>
+          <li><a href="#"><i class="fa fa-terminal"></i> Services</a></li>
+          <li class="active">List</li>
         </ol>
       </section>
 
       <!-- Main content -->
       <section class="content">
+        <!-- START LOCK SCREEN ITEM -->
+        <div>
+          <div class="list-group">
+            <text class="list-group-item services" id="listServices">Service name</text>
+          </div>
+        </div>
+        <!-- =========================================================== -->
 
-       <!-- =========================================================== -->
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
 
-       <!-- CPU -->
-       <div class="row">
-         <!-- CPU -->
-         <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-red">
-            <div class="inner">
-              <!-- CPU -->
-              <input type="text" class="dial" data-readonly="true" readonly="readonly" value="2" data-skin="tron" data-thickness="0.2" data-angleArc="250" data-angleOffset="-125" data-width="120" data-height="120" data-displayInput=false data-fgColor="#7c7c7c">
-              <p class="usageCPU">CPU usage %</p>
-            </div>
-            <div class="icon">
-              <i class="fa fa-pie-chart" aria-hidden="true"></i>
-            </div>
-            <div class="small-box-footer">
-             Current CPU level
-           </div>
-         </div>
-       </div>
-
-  </div>
-  <!-- BAR CHART -->
-  <div class="box box-success">
-    <div class="box-header with-border">
-      <h3 class="box-title">Daily CPU USAGE %</h3>
-
-      <div class="box-tools pull-right">
-        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-        </button>
-        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+    <!-- Main Footer -->
+    <footer class="main-footer">
+      <!-- To the right -->
+      <div class="pull-right hidden-xs">
+        <a href="http://www10.ujaen.es/">Universidad de Jaén</a> - Daniel Martínez Caballero
       </div>
-    </div>
-    <div class="box-body chart-responsive">
-      <div class="chart" id="bar-chart" style="height: 300px;"></div>
-    </div>
-    <!-- /.box-body -->
+      <!-- Default to the left -->
+      <strong>Copyright &copy; 2017 <a href="#">Server Management</a>.</strong> All rights reserved.
+    </footer>
+
+
+    <div class="control-sidebar-bg"></div>
   </div>
-    <!-- =========================================================== -->
+  <!-- ./wrapper -->
 
-  </section>
-  <!-- /.content -->
-</div>
-<!-- /.content-wrapper -->
+  <!-- REQUIRED JS SCRIPTS -->
+  <!-- jQuery 2.2.3 -->
+  <script src="../dist/terminal/index.js"></script>
+  <!-- Morris.js charts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+  <script src="../plugins/morris/morris.min.js"></script>
 
-<!-- Main Footer -->
-<footer class="main-footer">
-  <!-- To the right -->
-  <div class="pull-right hidden-xs">
-    <a href="http://www10.ujaen.es/">Universidad de Jaén</a> - Daniel Martínez Caballero
-  </div>
-  <!-- Default to the left -->
-  <strong>Copyright &copy; 2017 <a href="#">Server Management</a>.</strong> All rights reserved.
-</footer>
+  <script src="../plugins/knob/jquery.knob.js"></script>
+  <!-- Bootstrap 3.3.6 -->
+  <script src="../bootstrap/js/bootstrap.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="../dist/js/app.js"></script>
 
+  <script>
 
-<div class="control-sidebar-bg"></div>
-</div>
-<!-- ./wrapper -->
+    status();
+    services();
+    temperature();
+    log();
 
-<!-- REQUIRED JS SCRIPTS -->
-<!-- jQuery 2.2.3 -->
-<script src="../dist/terminal/index.js"></script>
-<!-- Morris.js charts -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-<script src="../plugins/morris/morris.min.js"></script>
+    var statusInterval = setInterval(status, 1000);
+    var serviceInterval = setInterval(services, 30000);
+    var tempInterval = setInterval(temperature, 10000);
+    var logInterval = setInterval(log, 30000);
 
-<script src="../plugins/knob/jquery.knob.js"></script>
-<!-- Bootstrap 3.3.6 -->
-<script src="../bootstrap/js/bootstrap.min.js"></script>
-<!-- AdminLTE App -->
-<script src="../dist/js/app.js"></script>
+    function changeInterval(c){
+      clearInterval(statusInterval);
+      statusInterval = setInterval(status, c * 1000);
 
-<script>
+      clearInterval(serviceInterval);
+      serviceInterval = setInterval(services, c * 30000);
 
-  status();
-  sarCPU();
-  temperature();
-  log();
+      clearInterval(tempInterval);
+      tempInterval = setInterval(temperature, c * 10000);
 
-  var statusInterval = setInterval(status, 1000);
-  var sarCPUInterval = setInterval(sarCPU, 300000);
-  var tempInterval = setInterval(temperature, 10000);
-  var logInterval = setInterval(log, 30000);
+      clearInterval(logInterval);
+      logInterval = setInterval(log, c * 30000);
+    }
 
-
-  function changeInterval(c){
-    clearInterval(statusInterval);
-    statusInterval = setInterval(status, c * 1000);
-
-    clearInterval(sarCPUInterval);
-    sarCPUInterval = setInterval(sarCPU, c * 300000);
-
-    clearInterval(tempInterval);
-    tempInterval = setInterval(temperature, c * 10000);
-
-    clearInterval(logInterval);
-    logInterval = setInterval(log, c * 30000);
-  }
-
-  setTimeout(function() {
+    setTimeout(function() {
   myApp.hidePleaseWait();// rest of code here
 }, 500);
-</script>
+
+    $(document).ready(function(){  
+      $('#send-auth').click(function(event){  
+       event.preventDefault();
+       /*Captura de datos escrito en los inputs*/      
+       var ip     = sessionStorage.getItem("API_IP")
+       var port   = sessionStorage.getItem("API_PORT")
+       var pass   = document.getElementById("key").value;
+       /*Funcion Cargar y Mostrar datos*/
+       $(document).ready(function(){                      
+        $.ajax({
+          url: 'https://' + ip + ':' + port + '/api/login',
+          type: 'POST',
+          data : JSON.stringify({ key: pass }),
+          success: function (output, status, xhr) {
+            /*Guardando los datos en el LocalStorage*/
+            sessionStorage.setItem("API_KEY", output);
+            sessionStorage.setItem("API_IP", ip);
+            sessionStorage.setItem("API_PORT", port);
+            $('.terminalW').show(1000);
+            $('.formu').hide(500);
+          },
+          error: function (jqXHR, exception) {
+           console.log('Error')
+           $('.error').html('Error!');
+         }
+       });
+      });  
+
+
+       /*Limpiando los campos o inputs*/
+      //document.getElementById("apikey").value = "";
+    });  
+    });
+  </script>
 
 
 </body>
