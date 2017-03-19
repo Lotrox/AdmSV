@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+
+<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+  <title>Disks | Dashboard</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.6 -->
+  <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="../dist/css/AdminLTE.css">
+  <!-- Morris charts -->
+  <link rel="stylesheet" href="../plugins/morris/morris.css">
+  <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'>
+  <link href="../dist/terminal/index.css" rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
+  <link rel="shortcut icon" href="../dist/img/ubuntu-server-logo.png" />
+</head>
+
+
+<body class="hold-transition skin-red sidebar-mini">
+  <div class="wrapper">
+
+    <div id="header"></div>
+    <!-- Left side column. contains the logo and sidebar -->
+    <div id="sidebar"></div>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          CPU
+          <!--<small>Optional description</small>-->
+        </h1>
+        <ol class="breadcrumb">
+          <li><a href="#"><i class="fa fa-area-chart"></i> Performance</a></li>
+          <li class="active">Disks</li>
+        </ol>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+
+       <!-- =========================================================== -->
+
+       <!-- CPU -->
+       <div class="row">
+         <!-- CPU -->
+          <!-- small box -->
+          <!-- DONUT CHART -->
+          <div class="box box-default">
+            <div class="box-header with-border">
+              <h3 class="box-title"><text class="folderDisk"></text></h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+            </div>
+            <div class="box-body">
+              <canvas id="pieChart" style="height:250px"></canvas>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+
+
+  </div>
+  <!-- BAR CHART -->
+  <div class="box box-success">
+    <div class="box-header with-border">
+      <h3 class="box-title">Disks Usage</h3>
+
+      <div class="box-tools pull-right">
+        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+        </button>
+        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+      </div>
+    </div>
+    <div class="box-body chart-responsive">
+      <div class="chart" id="bar-chart" style="height: 300px;"></div>
+    </div>
+    <!-- /.box-body -->
+  </div>
+
+
+    <!-- BAR CHART -->
+  <div class="box box-success">
+    <div class="box-header with-border">
+      <h3 class="box-title">Disks Activity</h3>
+
+      <div class="box-tools pull-right">
+        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+        </button>
+        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+      </div>
+    </div>
+    <div class="box-body chart-responsive">
+      <div class="chart" id="bar-chart2" style="height: 300px;"></div>
+    </div>
+    <!-- /.box-body -->
+  </div>
+    <!-- =========================================================== -->
+
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<!-- Main Footer -->
+<footer class="main-footer">
+  <!-- To the right -->
+  <div class="pull-right hidden-xs">
+    <a href="http://www10.ujaen.es/">Universidad de Jaén</a> - Daniel Martínez Caballero
+  </div>
+  <!-- Default to the left -->
+  <strong>Copyright &copy; 2017 <a href="#">AdminServer Client</a>.</strong> All rights reserved.
+</footer>
+
+
+<div class="control-sidebar-bg"></div>
+</div>
+<!-- ./wrapper -->
+
+<!-- REQUIRED JS SCRIPTS -->
+<!-- jQuery 2.2.3 -->
+<script src="../dist/terminal/index.js"></script>
+<!-- Morris.js charts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="../plugins/morris/morris.min.js"></script>
+
+<script src="../plugins/knob/jquery.knob.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="../bootstrap/js/bootstrap.min.js"></script>
+<script src="../../plugins/chartjs/Chart.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../dist/js/app.js"></script>
+
+<script>
+
+  status();
+  sarDISK();
+  diskSpace();
+  temperature();
+  log();
+
+  var statusInterval = setInterval(status, 1000);
+  var sarDISKInterval = setInterval(sarDISK, 300000);
+  var tempInterval = setInterval(temperature, 10000);
+  var logInterval = setInterval(log, 30000);
+
+
+  function changeInterval(c){
+    clearInterval(statusInterval);
+    statusInterval = setInterval(status, c * 1000);
+
+    clearInterval(sarDISKInterval);
+    sarDISKInterval = setInterval(sarDISK, c * 300000);
+
+    clearInterval(tempInterval);
+    tempInterval = setInterval(temperature, c * 10000);
+
+    clearInterval(logInterval);
+    logInterval = setInterval(log, c * 30000);
+  }
+
+  setTimeout(function() {
+  myApp.hidePleaseWait();// rest of code here
+}, 1000);
+</script>
+
+
+</body>
+</html>
