@@ -988,7 +988,6 @@ function sarMEM(){
         var used = Math.round(parseFloat(j[i].used)/1024/1024*100)/100
         data2.push({y: j[i].time, a: used});
       }
-      console.log(data2);
       var bar = new Morris.Area({
         element: 'bar-chart',
         resize: true,
@@ -1007,6 +1006,56 @@ function sarMEM(){
    }
  });
 }
+
+
+/*SAR DISK*/
+function sarDISK(){
+  $.ajax({
+    url: 'https://' + ip + ':' + port + '/sar/disk',
+    type: 'POST',
+    data : JSON.stringify({ key: localStorage.getItem("API_KEY") }),
+    success: function (output) {
+      var j = JSON.parse(output);
+      var data2 = [];
+      for (i = 0; i < Object.keys(JSON.parse(output)).length; i++){
+        used  = Math.round(parseFloat(j[i].used)*100)/100;
+        tps   = Math.round(parseFloat(j[i].tps)*100)/100;
+        read  = Math.round(parseFloat(j[i].read)*100)/100;
+        write = Math.round(parseFloat(j[i].write)*100)/100;
+
+        data2.push({y: j[i].time, a: used, b: tps, c: read, d: write });
+      }
+      var bar = new Morris.Area({ // Disk Usage
+        element: 'bar-chart',
+        resize: true,
+        data: data2,
+        lineColors: ['#FFa65a'],
+        xkey: 'y',
+        ykeys: ['a'],
+        labels: ['Used (%)'],
+        hideHover: 'auto',
+        parseTime: false,
+        pointSize: 0
+      })
+      var bar2 = new Morris.Area({ // Disk Activity
+        element: 'bar-chart2',
+        resize: true,
+        data: data2,
+        lineColors: ['#FFa65a','#3c8dbc','#af28a1'],
+        xkey: 'y',
+        ykeys: ['b', 'c', 'd'],
+        labels: ['Transfers per second', 'Sectors read (512B)', 'Sectors write (512B)'],
+        hideHover: 'auto',
+        parseTime: false,
+        pointSize: 0
+      })
+    },
+    error: function () {
+     console.log('Error')
+   }
+ });
+}
+
 
 /* CURRENT TEMPERATURE */
 function temperature(){
@@ -1044,6 +1093,22 @@ function netAVG(){
 }
 
 
+/* IPTables */
+function firewall(){
+  $.ajax({
+    url: 'https://' + ip + ':' + port + '/system/firewall',
+    type: 'POST',
+    data : JSON.stringify({ key: localStorage.getItem("API_KEY") }),
+    success: function (output) {
+     $('.firewall').html(output); 
+   },
+   error: function () {
+     console.log('Error')
+   }
+ });
+}
+
+
 /* LOG */
 function log(){
   $.ajax({
@@ -1065,12 +1130,14 @@ function log(){
     $('.numLog').html(Object.keys(JSON.parse(output)).length);
   },
   error: function () {
-   console.log('Error')
-   $(location).attr('href', '/index.html')
- }
+   console.log('Error');
+   if (window_focus){
+    $(location).attr('href', '/index.html');
+  }
+
+}
 });
 }
-
 
 
 /* Services list */
@@ -1096,54 +1163,126 @@ function services(){
       console.log(jqXHR.status)
     },
   });
+
+  var ul = document.getElementById('listServices');
+
+  ul.addEventListener('click', function(e) {
+    if (e.target.tagName === 'DIV'){
+      if(e.target.id[0] === '*'){
+        $.ajax({
+          url: 'https://' + ip + ':' + port + '/services/' + e.target.id.split('*')[1].split('.service')[0] + '/start',
+          type: 'POST',
+          data : JSON.stringify({ key: localStorage.getItem("API_KEY") }),
+          success: function (output) {
+            location.reload();
+          },
+          error: function () {
+           console.log('Error')
+         }
+       });
+      }else{
+        $.ajax({
+          url: 'https://' + ip + ':' + port + '/services/' + e.target.id.split('.service')[0] + '/stop',
+          type: 'POST',
+          data : JSON.stringify({ key: localStorage.getItem("API_KEY") }),
+          success: function (output) {
+            location.reload();
+          },
+          error: function () {
+           console.log('Error')
+         }
+       });
+      }
+    }
+  });
 }
 
-var ul = document.getElementById('listServices');
 
-ul.addEventListener('click', function(e) {
-  if (e.target.tagName === 'DIV'){
-    if(e.target.id[0] === '*'){
-      $.ajax({
-        url: 'https://' + ip + ':' + port + '/services/' + e.target.id.split('*')[1].split('.service')[0] + '/start',
-        type: 'POST',
-        data : JSON.stringify({ key: localStorage.getItem("API_KEY") }),
-        success: function (output) {
-          location.reload();
-        },
-        error: function () {
-         console.log('Error')
-       }
-     });
-    }else{
-      $.ajax({
-        url: 'https://' + ip + ':' + port + '/services/' + e.target.id.split('.service')[0] + '/stop',
-        type: 'POST',
-        data : JSON.stringify({ key: localStorage.getItem("API_KEY") }),
-        success: function (output) {
-          location.reload();
-        },
-        error: function () {
-         console.log('Error')
-       }
-     });
-    }
-  }
+/*DISK SPACE*/
+function diskSpace(){
+  $.ajax({
+    url: 'https://' + ip + ':' + port + '/system/disk',
+    type: 'POST',
+    data : JSON.stringify({ key: localStorage.getItem("API_KEY") }),
+    success: function (output) {
+      var j = JSON.parse(output);
+      used  = Math.round(j.used/1024/1024*100)/100;
+      avail = Math.round(j.avail/1024/1024*100)/100;
+      total = used + avail;
+      $('.folderDisk').html(j.folder + " [" + total + " GB]"); 
+      //- PIE CHART -
+      var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
+      var pieChart = new Chart(pieChartCanvas);
+      var PieData = [
+      {
+        value: avail,
+        color: "#1b9122",
+        highlight: "#1fba29",
+        label: "available"
+      },
+      {
+        value: used,
+        color: "#645e64",
+        highlight: "#878387",
+        label: "used"
+      }
+      ];
+      var pieOptions = {
+      //Boolean - Whether we should show a stroke on each segment
+      segmentShowStroke: true,
+      //String - The colour of each segment stroke
+      segmentStrokeColor: "#fff",
+      //Number - The width of each segment stroke
+      segmentStrokeWidth: 2,
+      //Number - The percentage of the chart that we cut out of the middle
+      percentageInnerCutout: 10, // This is 0 for Pie charts
+      //Number - Amount of animation steps
+      animationSteps: 100,
+      //String - Animation easing effect
+      animationEasing: "easeOutBounce",
+      //Boolean - Whether we animate the rotation of the Doughnut
+      animateRotate: true,
+      //Boolean - Whether we animate scaling the Doughnut from the centre
+      animateScale: true,
+      //Boolean - whether to make the chart responsive to window resizing
+      responsive: true,
+      // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+      maintainAspectRatio: true,
+      //String - A legend template
+      legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
+    };
+    //Create pie or douhnut chart
+    // You can switch between pie and douhnut using the method below.
+    pieChart.Doughnut(PieData, pieOptions);
+
+  },
+  error: function () {
+   console.log('Error')
+ }
 });
+}
 
 
 /* ---------------- */
 
-
+$(function(){
+  $("#header").load("header.html"); 
+  $("#sidebar").load("sidebar.html"); 
+  $("#footer").load("footer.html"); 
+});
 
 var window_focus = true;
 
 $(window).focus(function() {
-  console.log("true");
+  //console.log("true");
   window_focus = true;
   changeInterval(1);
 })
 .blur(function() {
-  console.log("false");
+  //console.log("false");
   window_focus = false;
   changeInterval(10);
 });
+
+
+

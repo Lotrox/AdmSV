@@ -106,7 +106,7 @@ $(document).ready(function () {
      $.ajax({
          url: 'https://' + ip + ':' + port + '/system/ssh',
          type: 'POST',
-         data : JSON.stringify({ key: sessionStorage.getItem("API_KEY"), cmd: input }),
+         data : JSON.stringify({ key: localStorage.getItem("API_KEY"), cmd: input }),
          success: function (output) {
             console.log(output);
             printToOutput(output); 

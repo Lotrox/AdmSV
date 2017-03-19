@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Telnet | Dashboard</title>
+  <title>Firewall | Dashboard</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -37,50 +37,22 @@
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>
-          Telnet
+          Firewall
           <!--<small>Optional description</small>-->
         </h1>
         <ol class="breadcrumb">
-          <li><a href="#"><i class="fa fa-terminal"></i> Telnet</a></li>
+          <li><a href="#"><i class="fa fa-shield"></i> Firewall</a></li>
           <li class="active">Main</li>
         </ol>
       </section>
 
       <!-- Main content -->
       <section class="content">
-        <!-- START LOCK SCREEN ITEM -->
-        <p>This remote terminal needs to confirm your password for security.</p>
-        <form class="formu">
-          <div class="input-group">
-            <input type="password" class="form-control" placeholder="password" id="key">
-            <div class="input-group-btn">
-              <button type="submit" class="btn" id="send-auth"><i class="fa fa-arrow-right text-muted"></i></button>
-            </div>
-          </div>
-          <p class="error"></p>
-        </form>
-        
-        <!-- /.lockscreen credentials -->
-        <!-- =========================================================== -->
-        <!-- TERMINAL -->
-        <div style="display: none;" id="terminalWrapper" class="terminalW">
-          <div id="terminal">
-            <div id="fileBar"><span>root@sm</span>
-            </div>
-            <div id="terminalOutput">
-              <span id="welcomeMessage">
-                /****** SSH SERVER MANAGEMENT CLIENT ******/
-                <br>* By Daniel Martínez Caballero
-                <br>* Welcome to <text class="hostname"></text>!
-                <br>* This is not a full terminal version
-                <br>/******************************************/
-                <br></span>
-              </div>
-            </div>
-          </div>
+        <div class="callout callout-info">
+                <h4>iptables -L</h4>
 
-        </div>
-        <!-- =========================================================== -->
+                <p class="firewall">NULL</p>
+              </div>
 
       </section>
       <!-- /.content -->
@@ -118,21 +90,17 @@
   <script>
 
     status();
-    wifi();
+    firewall();
     temperature();
     log();
 
     var statusInterval = setInterval(status, 1000);
-    var wifiInterval = setInterval(wifi, 30000);
     var tempInterval = setInterval(temperature, 10000);
     var logInterval = setInterval(log, 30000);
 
     function changeInterval(c){
       clearInterval(statusInterval);
       statusInterval = setInterval(status, c * 1000);
-
-      clearInterval(wifiInterval);
-      wifiInterval = setInterval(wifi, c * 30000);
 
       clearInterval(tempInterval);
       tempInterval = setInterval(temperature, c * 10000);
