@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-  <title>Disks | Dashboard</title>
+  <title>AdmS | Disks</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -27,7 +27,13 @@
 
 
 <body class="hold-transition skin-red sidebar-mini">
-  <div class="wrapper">
+  <div class="loader" id="loadingScreen">
+    <div class="one"></div>
+    <div class="two"></div>
+    <div class="three"></div>
+  </div>
+
+  <div id="content" class="wrapper">
 
     <div id="header"></div>
     <!-- Left side column. contains the logo and sidebar -->
@@ -55,80 +61,73 @@
        <!-- CPU -->
        <div class="row">
          <!-- CPU -->
-          <!-- small box -->
-          <!-- DONUT CHART -->
-          <div class="box box-default">
-            <div class="box-header with-border">
-              <h3 class="box-title"><text class="folderDisk"></text></h3>
+         <!-- small box -->
+         <!-- DONUT CHART -->
+         <div class="box box-default">
+          <div class="box-header with-border">
+            <h3 class="box-title"><text class="folderDisk"></text></h3>
 
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-              </div>
+            <div class="box-tools pull-right">
+              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+              </button>
+              <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
             </div>
-            <div class="box-body">
-              <canvas id="pieChart" style="height:250px"></canvas>
-            </div>
-            <!-- /.box-body -->
           </div>
-          <!-- /.box -->
+          <div class="box-body">
+            <canvas id="pieChart" style="height:250px"></canvas>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
 
 
-  </div>
-  <!-- BAR CHART -->
-  <div class="box box-success">
-    <div class="box-header with-border">
-      <h3 class="box-title">Disks Usage</h3>
-
-      <div class="box-tools pull-right">
-        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-        </button>
-        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
       </div>
-    </div>
-    <div class="box-body chart-responsive">
-      <div class="chart" id="bar-chart" style="height: 300px;"></div>
-    </div>
-    <!-- /.box-body -->
-  </div>
+      <!-- BAR CHART -->
+      <div class="box box-success">
+        <div class="box-header with-border">
+          <h3 class="box-title">Disks Usage</h3>
 
-
-    <!-- BAR CHART -->
-  <div class="box box-success">
-    <div class="box-header with-border">
-      <h3 class="box-title">Disks Activity</h3>
-
-      <div class="box-tools pull-right">
-        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-        </button>
-        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+          </div>
+        </div>
+        <div class="box-body chart-responsive">
+          <div class="chart" id="bar-chart" style="height: 300px;"></div>
+        </div>
+        <!-- /.box-body -->
       </div>
-    </div>
-    <div class="box-body chart-responsive">
-      <div class="chart" id="bar-chart2" style="height: 300px;"></div>
-    </div>
-    <!-- /.box-body -->
+
+
+      <!-- BAR CHART -->
+      <div class="box box-success">
+        <div class="box-header with-border">
+          <h3 class="box-title">Disks Activity</h3>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+          </div>
+        </div>
+        <div class="box-body chart-responsive">
+          <div class="chart" id="bar-chart2" style="height: 300px;"></div>
+        </div>
+        <!-- /.box-body -->
+      </div>
+      <!-- =========================================================== -->
+
+    </section>
+    <!-- /.content -->
   </div>
-    <!-- =========================================================== -->
+  <!-- /.content-wrapper -->
 
-  </section>
-  <!-- /.content -->
-</div>
-<!-- /.content-wrapper -->
-
-<!-- Main Footer -->
-<footer class="main-footer">
-  <!-- To the right -->
-  <div class="pull-right hidden-xs">
-    <a href="http://www10.ujaen.es/">Universidad de Jaén</a> - Daniel Martínez Caballero
-  </div>
-  <!-- Default to the left -->
-  <strong>Copyright &copy; 2017 <a href="#">AdminServer Client</a>.</strong> All rights reserved.
-</footer>
+  <!-- Main Footer -->
+  <div id="footer"></div>
 
 
-<div class="control-sidebar-bg"></div>
+  <div class="control-sidebar-bg"></div>
 </div>
 <!-- ./wrapper -->
 

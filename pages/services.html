@@ -3,9 +3,10 @@
 <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
 <html>
 <head>
+
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Services | Dashboard</title>
+  <title>AdmS | Services</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -23,10 +24,15 @@
   <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
   <link rel="shortcut icon" href="../dist/img/ubuntu-server-logo.png" />
 </head>
-
-
 <body class="hold-transition skin-red sidebar-mini">
-  <div class="wrapper">
+
+  <div class="loader" id="loadingScreen">
+    <div class="one"></div>
+    <div class="two"></div>
+    <div class="three"></div>
+  </div>
+
+  <div id="content" class="wrapper">
 
     <div id="header"></div>
     <!-- Left side column. contains the logo and sidebar -->
@@ -51,109 +57,97 @@
         <!-- START LOCK SCREEN ITEM -->
         <div>
           <div class="list-group">
-          <p>Some services need time to start</p>
+            <p>Some services need time to start</p>
             <text class="list-group-item services" id="listServices">Service name</text>
           </div>
+          <!-- Modal -->
+          <div class="modal" id="modalService" role="dialog">
+            <div class="modal-dialog">
+
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <center><h3 class="modal-title service"/></b></h3></center>
+                </div>
+                <div class="modal-body">
+                  <b>Name: </b><text class="nameServiceInfo"></text>
+                </br>
+                <b>Loaded: </b><text class="loadedServiceInfo"></text>
+              </br>
+              <b>Active: </b><text class="statusServiceInfo"></text>
+              <div style="padding-top: 10px">
+                <center>
+                <button type="button" style="width: 60px"><i class="fa fa-play" aria-hidden="true"></i></button>
+                <button type="button" style="width: 60px"><i class="fa fa-stop" aria-hidden="true"></i></button>
+                <button type="button" style="width: 60px"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+                <button type="button" style="width: 60px"><i class="fa fa-info" aria-hidden="true"></i></button>
+                </center>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+
         </div>
-        <!-- =========================================================== -->
-
-      </section>
-      <!-- /.content -->
-    </div>
-    <!-- /.content-wrapper -->
-
-    <!-- Main Footer -->
-    <footer class="main-footer">
-      <!-- To the right -->
-      <div class="pull-right hidden-xs">
-        <a href="http://www10.ujaen.es/">Universidad de Jaén</a> - Daniel Martínez Caballero
       </div>
-      <!-- Default to the left -->
-      <strong>Copyright &copy; 2017 <a href="#">AdminServer Client</a>.</strong> All rights reserved.
-    </footer>
+    </div>
+    <!-- =========================================================== -->
+
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<!-- Main Footer -->
+<div id="footer"></div>
 
 
-    <div class="control-sidebar-bg"></div>
-  </div>
-  <!-- ./wrapper -->
+<div class="control-sidebar-bg"></div>
+</div>
+<!-- ./wrapper -->
 
-  <!-- REQUIRED JS SCRIPTS -->
-  <!-- jQuery 2.2.3 -->
-  <script src="../dist/terminal/index.js"></script>
-  <!-- Morris.js charts -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-  <script src="../plugins/morris/morris.min.js"></script>
+<!-- REQUIRED JS SCRIPTS -->
+<!-- jQuery 2.2.3 -->
+<script src="../dist/terminal/index.js"></script>
+<!-- Morris.js charts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="../plugins/morris/morris.min.js"></script>
 
-  <script src="../plugins/knob/jquery.knob.js"></script>
-  <!-- Bootstrap 3.3.6 -->
-  <script src="../bootstrap/js/bootstrap.min.js"></script>
-  <!-- AdminLTE App -->
-  <script src="../dist/js/app.js"></script>
+<script src="../plugins/knob/jquery.knob.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="../bootstrap/js/bootstrap.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../dist/js/app.js"></script>
 
-  <script>
+<script>
 
-    status();
-    services();
-    temperature();
-    log();
+  status();
+  services();
+  temperature();
+  log();
 
-    var statusInterval = setInterval(status, 1000);
-    var serviceInterval = setInterval(services, 30000);
-    var tempInterval = setInterval(temperature, 10000);
-    var logInterval = setInterval(log, 30000);
+  var statusInterval = setInterval(status, 1000);
+  var serviceInterval = setInterval(services, 30000);
+  var tempInterval = setInterval(temperature, 10000);
+  var logInterval = setInterval(log, 30000);
 
-    function changeInterval(c){
-      clearInterval(statusInterval);
-      statusInterval = setInterval(status, c * 1000);
+  function changeInterval(c){
+    clearInterval(statusInterval);
+    statusInterval = setInterval(status, c * 1000);
 
-      clearInterval(serviceInterval);
-      serviceInterval = setInterval(services, c * 30000);
+    clearInterval(serviceInterval);
+    serviceInterval = setInterval(services, c * 30000);
 
-      clearInterval(tempInterval);
-      tempInterval = setInterval(temperature, c * 10000);
+    clearInterval(tempInterval);
+    tempInterval = setInterval(temperature, c * 10000);
 
-      clearInterval(logInterval);
-      logInterval = setInterval(log, c * 30000);
-    }
+    clearInterval(logInterval);
+    logInterval = setInterval(log, c * 30000);
+  }
 
-    setTimeout(function() {
-  myApp.hidePleaseWait();// rest of code here
-}, 500);
-
-    $(document).ready(function(){  
-      $('#send-auth').click(function(event){  
-       event.preventDefault();
-       /*Captura de datos escrito en los inputs*/      
-       var ip     = sessionStorage.getItem("API_IP")
-       var port   = sessionStorage.getItem("API_PORT")
-       var pass   = document.getElementById("key").value;
-       /*Funcion Cargar y Mostrar datos*/
-       $(document).ready(function(){                      
-        $.ajax({
-          url: 'https://' + ip + ':' + port + '/api/login',
-          type: 'POST',
-          data : JSON.stringify({ key: pass }),
-          success: function (output, status, xhr) {
-            /*Guardando los datos en el LocalStorage*/
-            sessionStorage.setItem("API_KEY", output);
-            sessionStorage.setItem("API_IP", ip);
-            sessionStorage.setItem("API_PORT", port);
-            $('.terminalW').show(1000);
-            $('.formu').hide(500);
-          },
-          error: function (jqXHR, exception) {
-           console.log('Error')
-           $('.error').html('Error!');
-         }
-       });
-      });  
-
-
-       /*Limpiando los campos o inputs*/
-      //document.getElementById("apikey").value = "";
-    });  
-    });
-  </script>
+</script>
 
 
 </body>

@@ -836,19 +836,21 @@ if (typeof jQuery === "undefined") {
 
  var myApp;
  myApp = myApp || (function () {
-  var pleaseWaitDiv = $('<div class="modal hide" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false"><div class="modal-header"><h1>Processing...</h1></div><div class="modal-body"><div class="progress progress-striped active"><div class="bar" style="width: 100%;"></div></div></div></div>');
   return {
     showPleaseWait: function() {
-      pleaseWaitDiv.modal();
+      $('#content').show();
+      $('#loadingScreen').show();
     },
     hidePleaseWait: function () {
-      pleaseWaitDiv.modal('hide');
+      $('#content').show();
+      $('#loadingScreen').hide();
     },
 
   };
 })();
 
 myApp.showPleaseWait();
+
 
 
 /*Obtener datos almacenados*/
@@ -1151,13 +1153,14 @@ function services(){
       data2 = []
       for (i = 0; i < Object.keys(JSON.parse(output)).length; i++){
         color = 'list-group-item-success'; 
-        icon  = '<i style="float: right" class="fa fa-stop"></i>'
+        icon  = '<i style="float: right" class="fa fa-pencil-square-o"></i>'
         start  = ""
-        if (obj[i].status === 'exited'){ color = 'list-group-item-warning'; icon  = '<i style="float: right" class="fa fa-play"></i>'; start = "*" };
-        if (obj[i].status === 'dead')  { color = 'list-group-item-danger'; icon  = '<i style="float: right" class="fa fa-play"></i>'; start = "*"};
-        data2.push('<div class="list-group-item list-group-item-action ' + color + '" id="' + start + obj[i].name +' ">' + obj[i].name + icon + '</div>');
+        if (obj[i].status === 'exited'){ color = 'list-group-item-warning'; icon  = '<i style="float: right" class="fa fa-pencil-square-o"></i>'};
+        if (obj[i].status === 'dead')  { color = 'list-group-item-danger'; icon  = '<i style="float: right" class="fa fa-pencil-square-o"></i>'};
+        data2.push('<div data-toggle="modal" data-target="#modalService" class="list-group-item list-group-item-action ' + color + '" id="' + start + obj[i].name +' ">' + obj[i].name + icon + '</div>');
       }
       $('.services').html(data2);
+      myApp.hidePleaseWait();
     },
     error: function(jqXHR, textStatus, errorThrown) {
       console.log(jqXHR.status)
@@ -1168,31 +1171,26 @@ function services(){
 
   ul.addEventListener('click', function(e) {
     if (e.target.tagName === 'DIV'){
-      if(e.target.id[0] === '*'){
-        $.ajax({
-          url: 'https://' + ip + ':' + port + '/services/' + e.target.id.split('*')[1].split('.service')[0] + '/start',
-          type: 'POST',
-          data : JSON.stringify({ key: localStorage.getItem("API_KEY") }),
-          success: function (output) {
-            location.reload();
-          },
-          error: function () {
-           console.log('Error')
-         }
-       });
-      }else{
-        $.ajax({
-          url: 'https://' + ip + ':' + port + '/services/' + e.target.id.split('.service')[0] + '/stop',
-          type: 'POST',
-          data : JSON.stringify({ key: localStorage.getItem("API_KEY") }),
-          success: function (output) {
-            location.reload();
-          },
-          error: function () {
-           console.log('Error')
-         }
-       });
-      }
+      nameService = e.target.id.split('.service')[0];
+      localStorage.setItem("service", nameService);
+      $('.service').html(nameService);
+
+      $.ajax({
+        url: 'https://' + ip + ':' + port + '/services/' + nameService,
+        type: 'POST',
+        data : JSON.stringify({ key: localStorage.getItem("API_KEY") }),
+        success: function (output) {     
+         newout = JSON.parse(output);
+         $('.nameServiceInfo').html(newout.name); 
+         $('.loadedServiceInfo').html(newout.loaded); 
+         $('.statusServiceInfo').html(newout.status); 
+         console.log(newout.name);
+       },
+       error: function () {
+         console.log('Error')
+       }
+     });
+
     }
   });
 }
@@ -1283,6 +1281,7 @@ $(window).focus(function() {
   window_focus = false;
   changeInterval(10);
 });
+
 
 
 

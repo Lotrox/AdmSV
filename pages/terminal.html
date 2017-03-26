@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Terminal | Dashboard</title>
+  <title>AdmS | Terminal</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -26,7 +26,13 @@
 
 
 <body class="hold-transition skin-red sidebar-mini">
-  <div class="wrapper">
+  <div class="loader" id="loadingScreen">
+    <div class="one"></div>
+    <div class="two"></div>
+    <div class="three"></div>
+  </div>
+
+  <div id="content" class="wrapper">
 
     <div id="header"></div>
     <!-- Left side column. contains the logo and sidebar -->
@@ -88,14 +94,7 @@
     <!-- /.content-wrapper -->
 
     <!-- Main Footer -->
-    <footer class="main-footer">
-      <!-- To the right -->
-      <div class="pull-right hidden-xs">
-        <a href="http://www10.ujaen.es/">Universidad de Jaén</a> - Daniel Martínez Caballero
-      </div>
-      <!-- Default to the left -->
-      <strong>Copyright &copy; 2017 <a href="#">AdminServer Client</a>.</strong> All rights reserved.
-    </footer>
+    <div id="footer"></div>
 
 
     <div class="control-sidebar-bg"></div>
