@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+
+<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Terminal | Dashboard</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.6 -->
+  <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="../dist/css/AdminLTE.css">
+  <!-- Morris charts -->
+  <link rel="stylesheet" href="../plugins/morris/morris.css">
+  <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'>
+  <link href="../dist/terminal/index.css" rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
+  <link rel="shortcut icon" href="../dist/img/ubuntu-server-logo.png" />
+</head>
+
+
+<body class="hold-transition skin-red sidebar-mini">
+  <div class="wrapper">
+
+    <div id="header"></div>
+    <!-- Left side column. contains the logo and sidebar -->
+    <div id="sidebar"></div>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          Terminal
+          <!--<small>Optional description</small>-->
+        </h1>
+        <ol class="breadcrumb">
+          <li><a href="#"><i class="fa fa-terminal"></i> Terminal</a></li>
+          <li class="active">Main</li>
+        </ol>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <!-- START LOCK SCREEN ITEM -->
+        <p>This remote terminal needs to confirm your password for security.</p>
+        <form class="formu">
+          <div class="input-group">
+            <input type="password" class="form-control" placeholder="password" id="key">
+            <div class="input-group-btn">
+              <button type="submit" class="btn" id="send-auth"><i class="fa fa-arrow-right text-muted"></i></button>
+            </div>
+          </div>
+          <p class="error"></p>
+        </form>
+        
+        <!-- /.lockscreen credentials -->
+        <!-- =========================================================== -->
+        <!-- TERMINAL -->
+        <div style="display: none;" id="terminalWrapper" class="terminalW">
+          <div id="terminal">
+            <div id="fileBar"><span>root@sm</span>
+            </div>
+            <div id="terminalOutput">
+              <span id="welcomeMessage">
+                /****** SSH SERVER MANAGEMENT CLIENT ******/
+                <br>* By Daniel Martínez Caballero
+                <br>* Welcome to <text class="hostname"></text>!
+                <br>* This is not a full terminal version
+                <br>/******************************************/
+                <br></span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- =========================================================== -->
+
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Main Footer -->
+    <footer class="main-footer">
+      <!-- To the right -->
+      <div class="pull-right hidden-xs">
+        <a href="http://www10.ujaen.es/">Universidad de Jaén</a> - Daniel Martínez Caballero
+      </div>
+      <!-- Default to the left -->
+      <strong>Copyright &copy; 2017 <a href="#">AdminServer Client</a>.</strong> All rights reserved.
+    </footer>
+
+
+    <div class="control-sidebar-bg"></div>
+  </div>
+  <!-- ./wrapper -->
+
+  <!-- REQUIRED JS SCRIPTS -->
+  <!-- jQuery 2.2.3 -->
+  <script src="../dist/terminal/index.js"></script>
+  <!-- Morris.js charts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+  <script src="../plugins/morris/morris.min.js"></script>
+
+  <script src="../plugins/knob/jquery.knob.js"></script>
+  <!-- Bootstrap 3.3.6 -->
+  <script src="../bootstrap/js/bootstrap.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="../dist/js/app.js"></script>
+
+  <script>
+
+    status();
+    wifi();
+    temperature();
+    log();
+
+    var statusInterval = setInterval(status, 1000);
+    var wifiInterval = setInterval(wifi, 30000);
+    var tempInterval = setInterval(temperature, 10000);
+    var logInterval = setInterval(log, 30000);
+
+    function changeInterval(c){
+      clearInterval(statusInterval);
+      statusInterval = setInterval(status, c * 1000);
+
+      clearInterval(wifiInterval);
+      wifiInterval = setInterval(wifi, c * 30000);
+
+      clearInterval(tempInterval);
+      tempInterval = setInterval(temperature, c * 10000);
+
+      clearInterval(logInterval);
+      logInterval = setInterval(log, c * 30000);
+    }
+
+    setTimeout(function() {
+  myApp.hidePleaseWait();// rest of code here
+}, 500);
+
+    $(document).ready(function(){  
+      $('#send-auth').click(function(event){  
+       event.preventDefault();
+       /*Captura de datos escrito en los inputs*/      
+       var ip     = localStorage.getItem("API_IP")
+       var port   = localStorage.getItem("API_PORT")
+       var pass   = document.getElementById("key").value;
+       /*Funcion Cargar y Mostrar datos*/
+       $(document).ready(function(){                      
+        $.ajax({
+          url: 'https://' + ip + ':' + port + '/api/login',
+          type: 'POST',
+          data : JSON.stringify({ key: pass }),
+          success: function (output, status, xhr) {
+            /*Guardando los datos en el LocalStorage*/
+            localStorage.setItem("API_KEY", output);
+            localStorage.setItem("API_IP", ip);
+            localStorage.setItem("API_PORT", port);
+            $('.terminalW').show(1000);
+            $('.formu').hide(500);
+          },
+          error: function (jqXHR, exception) {
+           console.log('Error')
+           $('.error').html('Error!');
+         }
+       });
+      });  
+
+       
+       /*Limpiando los campos o inputs*/
+      //document.getElementById("apikey").value = "";
+    });  
+    });
+  </script>
+
+
+</body>
+</html>
