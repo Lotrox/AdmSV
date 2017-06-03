@@ -910,16 +910,17 @@ function status(){
       .trigger('change');
       $('.usageCPU').html("<b>CPU</b> " + obj.cuCPU + "%");
 
+      $('.cpu').html("1 min: " + obj.loadAVG[0]);
+      $('.cpu-two').html("5 min: " + obj.loadAVG[1]);
+      $('.cpu-three').html("15 min: " + obj.loadAVG[2]);
+
       //Update dial for current MEM
       $('.dial2')
       .val(obj.cuMEM)
       .trigger('change');
       $('.usageMEM').html("<b>MEM</b> " + obj.cuMEM + "%");
-    },
-    error: function () {
-     console.log('Error')
-   }
- });
+    }
+  });
 }
 
 /* WiFi */
@@ -1185,6 +1186,7 @@ function services(){
          $('.loadedServiceInfo').html(newout.loaded); 
          $('.statusServiceInfo').html(newout.status); 
          console.log(newout.name);
+         localStorage.getItem(newout.name);
        },
        error: function () {
          console.log('Error')
@@ -1193,6 +1195,52 @@ function services(){
 
     }
   });
+}
+
+
+function startService(){
+  service = localStorage.getItem("service");
+  $.ajax({
+    url: 'https://' + ip + ':' + port + '/services/' + service + '/start',
+    type: 'POST',
+    data : JSON.stringify({ key: localStorage.getItem("API_KEY") }),
+    success: function (output) {
+      location.reload();
+    },
+    error: function () {
+      location.reload();
+    }
+  });
+}
+
+function stopService(){
+  service = localStorage.getItem("service");
+  $.ajax({
+    url: 'https://' + ip + ':' + port + '/services/' + service + '/stop',
+    type: 'POST',
+    data : JSON.stringify({ key: localStorage.getItem("API_KEY") }),
+    success: function (output) {
+      location.reload();
+    },
+    error: function () {
+     location.reload();
+   }
+ });
+}
+
+function restartService(){
+  service = localStorage.getItem("service");
+  $.ajax({
+    url: 'https://' + ip + ':' + port + '/services/' + service + '/restart',
+    type: 'POST',
+    data : JSON.stringify({ key: localStorage.getItem("API_KEY") }),
+    success: function (output) {
+     location.reload();
+   },
+   error: function () {
+     location.reload();
+   }
+ });
 }
 
 
